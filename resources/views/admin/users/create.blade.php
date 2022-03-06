@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <h1>Create User</h1>
-    {!! Form::open(['method'=>'POST','action'=>'AdminUsersController@store']) !!}
+    {!! Form::open(['method'=>'POST','action'=>'AdminUsersController@store','enctype'=>"multipart/form-data"]) !!}
        <div class="form-group">
 
             {!! Form::label('name','Name:') !!}
@@ -24,8 +24,8 @@
        </div>
        <div class="form-group">
 
-        {!! Form::label('photo_id','status:') !!}
-        {!! Form::file('photo_id', ['class'=>'form-control']) !!}
+        {!! Form::label('photo_id','Photo:') !!}
+        {!! Form::file('photo_id',null, ['class'=>'form-control']) !!}
        </div>
        <div class="form-group">
 
