@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\traits\media;
 use App\Role;
 use App\User;
 use App\Photo;
+use App\Http\traits\media;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserEditRequest;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class AdminUsersController extends Controller
@@ -119,7 +120,7 @@ class AdminUsersController extends Controller
     public function update(UserEditRequest $request, $id)
     {
         //
-        // return $request->photo_id;
+
 
         // $input=$request->all();
         if (trim($request->password) == "") {
@@ -130,6 +131,9 @@ class AdminUsersController extends Controller
             $input=$request->all();
             $input['password']=bcrypt($request->password);
         }
+
+
+
         $user=User::findOrFail($id);
         if ($file=$request->file('photo_id')) {
             # code...
@@ -150,5 +154,16 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        // User::findOrFail($id)->delete();
+
+        $user=User::findOrFail($id);
+        Session::flash('deleted_user','The user has been deleted');
+
+        //delete image from folder
+        $this->deleteMedia($user->photo->file, 'users');
+        // delete record from database
+        $user->delete();
+        return redirect('/admin/users');
+
     }
 }

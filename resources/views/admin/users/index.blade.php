@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+@if (Session::has('deleted_user'))
+    <div class="alert alert-danger">{{session('deleted_user')}}</div>
+@endif
     <h1>Users</h1>
     <table class="table">
         <thead>
@@ -18,13 +21,11 @@
         <tbody>
 
             @if ($users)
-                @foreach ($users as $user )
+                @foreach($users as $user )
                     <tr>
                         <td>{{$user->id}}</td>
                         {{--  <td>{{$user->photo ? $user->photo->file :"no user photo"}}</td>  --}}
                         {{--  <td><img height="50px" src="{{$user->photo ? $user->photo->file :"no user photo"}}" alt=""></td>  --}}
-
-
 
                         <td><img height="100px" width="100px" src="{{$user->photo ?url('/') . '/images/users/' . $user->photo->file  :'https://via.placeholder.com/100'}}" alt="" class="img-responsive img-rounded"></td>
                         <td> <a href="{{route('users.edit',$user->id)}}">{{$user->name}}</a></td>
@@ -39,5 +40,5 @@
                 @endforeach
             @endif
         </tbody>
-      </table>
+    </table>
 @endsection
